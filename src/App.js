@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import ChainAbstractionLayer from 'chainabstractionlayer';
 
-import liqualityUi from 'liquality-test';
+import liqualityUi from 'liquality-ui';
 
 import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
@@ -59,7 +59,6 @@ class App extends Component {
       selectedTransaction: null
     }));
   }
-
   render() {
     return (
       <Grid container spacing={16} className="App">
@@ -76,11 +75,6 @@ class App extends Component {
                 >
                   <FormControlLabel value="bitcoin" control={<Radio />} label="Bitcoin" />
                   <FormControlLabel value="ethereum" control={<Radio />} label="Ethereum" />
-        <BlockExplorer
-          block={this.state.block}
-          transactions={this.state.transactions}
-          selectedTransaction={this.state.selectedTransaction}
-          onTransactionClick={this.handleTransactionClicked.bind(this)} />
                 </RadioGroup>
               </FormControl>
             </Grid>
@@ -95,6 +89,11 @@ class App extends Component {
             </Grid>
           </Grid>
         </Grid>
+        <BlockExplorer
+          block={this.state.block}
+          transactions={this.state.transactions}
+          selectedTransaction={this.state.selectedTransaction}
+          onTransactionClick={this.handleTransactionClicked.bind(this)} />
       </Grid>
     );
   }
