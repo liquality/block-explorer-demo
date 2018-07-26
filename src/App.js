@@ -22,17 +22,17 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chainId: 'ethereum',
+      chainId: 'bitcoin',
       blockNumber: 1,
       block: null,
       transactions: null,
       selectedTransaction: null,
     };
     this.chains = {
-      ethereum: new ChainAbstractionLayer('ethereum://auth@localhost:8545/'),
-      bitcoin: new ChainAbstractionLayer('bitcoin://bitcoin:local321@localhost:18332/?timeout=200&version=0.16.0'),
+      // ethereum: new ChainAbstractionLayer('ethereum://auth@localhost:8545/'),
+      bitcoin: new ChainAbstractionLayer(new ChainAbstractionLayer.providers.bitcoin.BitcoinRPCProvider('http://localhost:8000', 'bitcoin', 'local321'))
     };
-    this.chain = this.chains.ethereum;
+    this.chain = this.chains[this.state.chainId];
   }
 
   handleChainChange(e) {
@@ -59,6 +59,7 @@ class App extends Component {
       selectedTransaction: null
     }));
   }
+
   render() {
     return (
       <Grid container spacing={16} className="App">
