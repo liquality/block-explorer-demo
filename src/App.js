@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import ChainAbstractionLayer from 'chainabstractionlayer';
+import { Client, providers, networks } from 'chainabstractionlayer';
 
 import liqualityUi from 'liquality-ui';
 
@@ -29,10 +29,13 @@ class App extends Component {
       selectedTransaction: null,
     };
     this.chains = {
-      // ethereum: new ChainAbstractionLayer('ethereum://auth@localhost:8545/'),
-      bitcoin: new ChainAbstractionLayer(new ChainAbstractionLayer.providers.bitcoin.BitcoinRPCProvider('http://localhost:8000', 'bitcoin', 'local321'))
+      bitcoin: new Client(),
+      ethereum: new Client()
     };
     this.chain = this.chains[this.state.chainId];
+
+    this.chains.bitcoin.addProvider(new providers.bitcoin.BitcoinRPCProvider('http://localhost:8000', 'bitcoin', 'local321'));
+    this.chains.ethereum.addProvider(new providers.ethereum.EthereumRPCProvider('http://localhost:7545', 'ethereum', 'local321'));
   }
 
   handleChainChange(e) {
@@ -50,7 +53,7 @@ class App extends Component {
   }
 
   async handleConfirm(e) {
-    const blockData = await this.chain.getBlockByNumber(this.state.blockNumber, false);
+    const blockData = await this.chain.getBlockByNumber(parseInt(this.state.blockNumber), false);
     const transactionCalls = blockData.transactions.map(tx => this.chain.getTransactionByHash(tx));
     const transactions = await Promise.all(transactionCalls);
     this.setState(Object.assign({}, this.state.block, {
